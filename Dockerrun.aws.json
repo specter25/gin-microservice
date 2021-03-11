@@ -1,0 +1,11 @@
+{
+    "AWSEBDockerrunVersion":"1",
+    "Image":{
+        "Name":"ujjwal25/gin-microservice"
+    },
+    "Ports" :[
+        {
+            "ContainerPort":"5000"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+# ignore source files
+
+
+controller/
+entity/
+middlewares/
+servie/
+templates/
+validators/
+server.go 
+go.mod
+go.sum
+README.md
+Dockerfile
