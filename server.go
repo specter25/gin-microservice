@@ -42,10 +42,12 @@ func main() {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{
+				"message": "Video Input is Valid",
+			})
 		}
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "Video Input is Valid",
-		})
+
 	})
 
 	server.Run(":8080")
