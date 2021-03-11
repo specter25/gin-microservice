@@ -14,14 +14,17 @@ type loginController struct {
 	jwtService   service.JWTService
 }
 
-func New(loginService service.LoginService, jwtService service.JWTService) LoginController {
+func NewLoginController(loginService service.LoginService, jwtService service.JWTService) LoginController {
 	return &loginController{
 		loginService: loginService,
 		jwtService:   jwtService,
 	}
 }
 func (controller *loginController) Login(ctx *gin.Context) string {
-	var credentials ctx.credentials
+	var credentials struct {
+		Username string
+		Password string
+	}
 	err := ctx.ShouldBindJSON(&credentials)
 	if err != nil {
 		return ""

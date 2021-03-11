@@ -14,6 +14,9 @@ import (
 var (
 	videoService    service.VideoService       = service.New()
 	videoController controller.VideoController = controller.New(videoService)
+	jwtService      service.JWTService         = service.NewJWTService()
+	loginService    service.LoginService       = service.NewLoginService()
+	loginController controller.LoginController = controller.NewLoginController(loginService, jwtService)
 )
 
 //to create a log file
@@ -41,7 +44,7 @@ func main() {
 				"token": token,
 			})
 		} else {
-			ctx.JSON(http.Unauthorized, nil)
+			ctx.JSON(http.StatusUnauthorized, nil)
 		}
 	})
 
