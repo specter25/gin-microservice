@@ -1,0 +1,28 @@
+{{template "header.html"}}
+
+
+<!-- Loop over the list of videos -->
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {{ range .videos }}
+    <div class="col">
+
+
+      <div class="card h-100">
+        <iframe class="card-img-top"  title={{.Title}} src={{.URL}}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <div class="card-body">
+          <h5 class="card-title">{{.Title}}</h5>
+          <p class="card-text">{{.Description}}</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Hello 123</small>
+        </div>
+      </div>
+    </div>
+    {{end}}
+
+  </div>
+
+
+
+{{template "footer.html"}}
