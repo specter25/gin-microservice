@@ -29,12 +29,12 @@ func main() {
 	// server := gin.Default()
 	server := gin.New()
 	//configure the srevre to use these 2 middlewares
-	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth())
+	server.Use(gin.Recovery(), middlewares.Logger())
 
 	server.Static("/css", "./templates/css")
 	server.LoadHTMLGlob("templates/*.html")
 
-	apiRoutes := server.Group("/api")
+	apiRoutes := server.Group("/api", middlewares.BasicAuth())
 	{
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, videoController.FindAll())
@@ -60,6 +60,12 @@ func main() {
 	{
 		viewRoutes.GET("/videos", videoController.ShowAll)
 	}
+	//We can setup this env variable from ebs sonsole
+	port := os.Getenv("PORT")
+	// Elastic beanstalk forwards request to port 5000
+	if port == "" {
+		port = "5000"
+	}
 
-	server.Run(":8080")
+	server.Run(":" + port)
 }
