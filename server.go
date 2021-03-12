@@ -8,11 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/specter25/gin-microservice/controller"
 	"github.com/specter25/gin-microservice/middlewares"
+	"github.com/specter25/gin-microservice/repository"
 	"github.com/specter25/gin-microservice/service"
 )
 
 var (
-	videoService    service.VideoService       = service.New()
+	videoRepository repository.VideoRepository = repository.NewVideoRepository()
+	videoService    service.VideoService       = service.New(videoRepository)
 	videoController controller.VideoController = controller.New(videoService)
 	jwtService      service.JWTService         = service.NewJWTService()
 	loginService    service.LoginService       = service.NewLoginService()
@@ -26,6 +28,8 @@ func setupLogOutput() {
 }
 
 func main() {
+
+	defer videoRepository.CloseDB()
 
 	// setupLogOutput()
 
@@ -68,6 +72,33 @@ func main() {
 
 		})
 
+		apiRoutes.PUT("/posts/:id", func(ctx *gin.Context) {
+			err := videoController.Update(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Video Updated",
+				})
+			}
+
+		})
+
+		apiRoutes.DELETE("/posts/:id", func(ctx *gin.Context) {
+			err := videoController.Delete(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"message": "Video Deleted",
+				})
+			}
+
+		})
 	}
 
 	viewRoutes := server.Group("/view")
